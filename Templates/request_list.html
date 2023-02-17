@@ -1,0 +1,90 @@
+
+<section>
+<div class="overflow-x-auto">
+  <table class="min-w-full divide-y-2 divide-gray-200 text-sm">
+    <thead>
+      <tr>
+        <th
+          class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
+        >
+         Name
+        </th>
+        <th
+          class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
+        >
+        Roll No
+        </th>
+        <th
+          class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
+        >
+        Department
+        </th>
+
+        <th
+          class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
+        >
+        Reason
+        </th>
+        <th
+          class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
+        >
+        Guardian Name
+        </th>
+        <th
+          class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
+        >
+        Guardian Phone
+        </th>
+        <th
+          class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
+        >
+        Status
+        </th>
+        
+        <th
+          class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900"
+        >
+        Action
+        </th>
+       
+      </tr>
+    </thead>
+
+    <tbody class="divide-y divide-gray-200">
+
+
+      {% for request in requests %}
+      <tr>
+        <td class="whitespace-nowrap px-4 py-2 text-gray-700" >{{ request.student.username }}</td>
+        
+        <td class="whitespace-nowrap px-4 py-2 text-gray-700">{{ request.student.rollno }}</td>
+        <td class="whitespace-nowrap px-4 py-2 text-gray-700">{{ request.student.department }}</td>
+        <td class="whitespace-nowrap px-4 py-2 text-gray-700">{{ request.reason }}</td>
+        <td class="whitespace-nowrap px-4 py-2 text-gray-700">{{ request.guardian_name }}</td>
+        <td class="whitespace-nowrap px-4 py-2 text-gray-700">{{ request.guardian_phone }}</td>
+        <td class="whitespace-nowrap px-4 py-2 text-gray-700">{{ request.status }}</td>
+        <td class="whitespace-nowrap px-4 py-2">
+
+            <form method="post" action="{% url 'approve_request' request.request_id %}">
+              {% csrf_token %}
+              <button class="inline-block rounded bg-green-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700" type="submit">Approve</button>
+            </form>
+        </td>
+
+
+          <td class="whitespace-nowrap px-2 py-2">
+            <form method="post" action="{% url 'reject_request' request.request_id %}">
+              {% csrf_token %}
+              <button class="inline-block rounded bg-orange-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700" type="submit">Reject</button>
+            </form>
+         
+        </td>
+      </tr>
+    {% endfor %}
+
+    </tbody>
+  </table>
+</div>
+</section>
+
+

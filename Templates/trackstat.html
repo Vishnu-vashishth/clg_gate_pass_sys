@@ -1,0 +1,21 @@
+<div class="w-full">
+  <div class="h-2 bg-indigo"></div>
+    <div class="flex items-center justify-center h-screen">
+      <div class="container mx-24 bg-white rounded shadow-lg">
+        <div class="px-12 py-6">
+          <div class="text-center">
+            <h1 class="font-normal text-3xl text-grey-darkest leading-loose my-3 w-full">Become a Stripe Partner today</h1>
+            <div class="w-full text-center">
+              <form action=" " method = "post" >
+                {%csrf_token%}
+                <div class="max-w-sm mx-auto p-1 pr-0 flex items-center">
+                  <input type="text" placeholder="Enter request id ex(20020004113-230501)" class="flex-1 appearance-none rounded shadow p-3 text-grey-dark mr-2 focus:outline-none" name = "reqid">
+                  <button type="submit" class=" bg-indigo text-black text-base font-semibold tracking-wide uppercase p-3 rounded shadow hover:bg-indigo-light">Get </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,103 @@
+<!--
+  This component uses @tailwindcss/forms
+
+  yarn add @tailwindcss/forms
+  npm install @tailwindcss/forms
+
+  plugins: [require('@tailwindcss/forms')]
+-->
+
+<section class="bg-gray-100 flex items-center pt-4 pb-4 justify-center">
+    
+  
+     <div class="rounded-lg bg-white lg:w-[50%]  p-8 shadow-lg lg:col-span-3 lg:p-12">
+          <form action=" " method = "post" class="space-y-8">
+            {%csrf_token%}
+           
+            <div>
+              <label class="sr-only" for="name">Name</label>
+              <input
+                class="w-full rounded-lg border-gray-200 p-3 text-sm"
+                placeholder="Parents/Guardian Name"
+                type="text"
+                id="name"
+                name = "guardian_name"
+              />
+            </div>
+  
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+                <label class="sr-only" for="email">Email</label>
+                <input
+                  class="w-full rounded-lg border-gray-200 p-3 text-sm"
+                  placeholder="Email address"
+                  type="email"
+                  id="email"
+                  name = "email"
+                />
+              </div>
+  
+              <div>
+                <label class="sr-only" for="phone">Phone</label>
+                <input
+                  class="w-full rounded-lg border-gray-200 p-3 text-sm"
+                  placeholder="Parents/Guardian Phone Number"
+                  type="tel"
+                  id="phone"
+                  name = "guardian_phone"
+                />
+              </div>
+            </div>
+  
+            <div class="grid grid-cols-1 gap-4 text-center sm:grid-cols-3">
+                <div class="form-group">
+                    <label for="course">Relation:</label>
+                    <select id="course" class="form-control" name="relation">
+                      
+                      <option value="" disabled selected>Select Relation</option>
+                      
+                      <option value="father">Father</option>
+                      <option value="mother">Mother</option>
+                      <option value="brother">Brother</option>
+                      <option value="Guardian">Guardian</option>
+                    </select>
+                  </div>
+                </div   >
+            <div>
+              <label class="sr-only" for="message">Reason</label>
+              <textarea
+                class="w-full rounded-lg border-gray-200 p-3 text-sm"
+                placeholder="Write Your Reason"
+                rows="8"
+                id="reason"
+                name = "reason"
+              ></textarea>
+            </div>
+    
+            <div class="mt-4">
+              <button
+                type="submit"
+                class="inline-flex w-full items-center justify-center rounded-lg bg-black px-5 py-3 text-white sm:w-auto"
+              >
+                <span class="font-medium"> Send Enquiry </span>
+  
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="ml-3 h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </button>
+            </div>
+          </form>
+    </div>
+  </section>
+  

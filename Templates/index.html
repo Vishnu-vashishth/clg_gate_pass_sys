@@ -1,0 +1,120 @@
+{%extends "base.html"%}
+
+
+
+{%block messages%}
+
+{% if messages %} 
+
+ {% for message in messages %}
+   {% if message.tags == 'error' %}
+           
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+{% elif message.tags == 'success' %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+{% endif %} 
+
+{% endfor %} 
+
+{% endif %}
+
+
+
+<style>
+    .alert{
+        margin-top: 50px;
+        width: 50%;
+        text-align: center;
+        margin-left: 25%;
+
+
+    }
+  </style>
+
+
+
+
+
+
+<script>
+    $(document).ready(function(){
+      $(".close").click(function(){
+        $(this).closest(".alert").hide();
+      });
+    });
+  </script>
+
+
+{%endblock%}
+
+
+{% block header %}
+{%include "header.html"%}
+{% endblock %}
+
+{%block content%}
+
+{%if title%}
+
+{%if title == "Home"%}
+
+{%include "home.html"%}
+
+{%elif title == "login"%}
+
+{%include "login.html"%}
+
+{%elif title == "coming soon"%}
+
+{%include "comingSoon.html"%}
+
+{%elif title == "register"%}
+
+{%include "register.html"%}
+
+{%elif title == "tregister"%}
+
+{%include "tregister.html"%}
+
+{%elif title == "trackstat"%}
+
+{%include "trackstat.html"%}
+
+{%elif title == "showstatus"%}
+
+{%include "showstatus.html"%}
+
+{%elif title == "tlogin"%}
+
+{%include "tlogin.html"%}
+
+{%elif title == "srequest"%}
+
+{%include "studentRequest.html"%}
+
+{%elif title == "Request List"%}
+
+{%include "request_list.html"%}
+
+{%endif%}
+
+{%endif%}
+
+{%endblock%}
+
+{%block footer%}
+
+{%include "footer.html"%}
+
+{%endblock%}
+       
