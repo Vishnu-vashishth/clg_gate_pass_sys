@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib import messages
-
 from .models import Students, teachers, student_requests
 from django.core.mail import send_mail
 from django.contrib.auth.hashers import make_password, check_password
@@ -9,7 +8,7 @@ from django.shortcuts import redirect
 import jwt
 from datetime import datetime, timedelta,date
 from django.conf import settings
-import bcrypt
+
 
 
 
