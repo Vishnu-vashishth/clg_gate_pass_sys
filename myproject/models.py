@@ -3,15 +3,17 @@ import datetime
 from twilio.rest import Client
 from django.conf import settings
 from twilio.base.exceptions import TwilioRestException
-
+import os
+from dotenv import load_dotenv
+load_dotenv()
 def sendsms(phone,msg):
     
-    client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+    client = Client(os.getenv('Account_SID'), os.getenv('Auth_Token'))
 
     try:
         message = client.messages.create(
             body=f'{msg}',
-            from_=settings.TWILIO_PHONE_NUMBER,
+            from_=os.getenv('Phone_Number'),
             to=phone
         )
     except TwilioRestException as e:

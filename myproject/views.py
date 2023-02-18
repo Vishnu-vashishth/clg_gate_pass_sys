@@ -7,20 +7,21 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.shortcuts import redirect
 import jwt
 from datetime import datetime, timedelta,date
-from django.conf import settings
 from twilio.rest import Client
 from django.conf import settings
 from twilio.base.exceptions import TwilioRestException
-
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 def sendsms(phone,msg):
     
-    client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+    client = Client(os.getenv('Account_SID'), os.getenv('Auth_Token'))
 
     try:
         message = client.messages.create(
             body=f'{msg}',
-            from_=settings.TWILIO_PHONE_NUMBER,
+            from_=os.getenv('Phone_Number'),
             to=phone
         )
     except TwilioRestException as e:
@@ -387,16 +388,16 @@ def approve_request(request,request_id):
             req.status = 'Approved by cc'
             req.save()
             studentPhone = req.student.phone
-            sendsms(f'{studentPhone}', f'Your request with id {req.request_id} has been approved by cc')
+            sendsms(f'+91{studentPhone}', f'Your request with id {req.request_id} has been approved by cc')
             hodphone = teachers.objects.get(email = req.hod).phone
-            sendsms(f'{hodphone}', f'Your request with id {req.request_id} has been approved by cc and is pending your approval. Please login to your account to approve the request.Follow the link https://clggatepasssys-production.up.railway.app/request_list ')
+            sendsms(f'+91{hodphone}', f'Your request with id {req.request_id} has been approved by cc and is pending your approval. Please login to your account to approve the request.Follow the link https://clggatepasssys-production.up.railway.app/request_list ')
             return redirect('request_list')
 
         elif teacher.role == 'HOD':
             req.status = 'Approved by hod'
             req.save()
             studentPhone = req.student.phone
-            sendsms(f'{studentPhone}', f'Your request with id {req.request_id} has been approved by hod')
+            sendsms(f'+91{studentPhone}', f'Your request with id {req.request_id} has been approved by hod')
             return redirect('request_list')
 
                 
