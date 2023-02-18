@@ -380,39 +380,45 @@ def request_list(request):
 
 
 def approve_request(request,request_id):
-    if request.method == 'POST':
-        temail =  request.COOKIES.get('temail')
-        teacher = teachers.objects.get(email=temail)
-        req = student_requests.objects.get(request_id=request_id)
-        if teacher.role == 'CC':
-            req.status = 'Approved by cc'
-            req.save()
-            studentPhone = req.student.phone
-            sendsms(f'+91{studentPhone}', f'Your request with id {req.request_id} has been approved by cc')
-            hodphone = teachers.objects.filter(email = req.hod).first().phone
-            sendsms(f'+91{hodphone}', f'Your request with id {req.request_id} has been approved by cc and is pending your approval. Please login to your account to approve the request.Follow the link https://clggatepasssys-production.up.railway.app/request_list ')
-            return redirect('request_list')
+    try:
+            if request.method == 'POST':
+                temail =  request.COOKIES.get('temail')
+                teacher = teachers.objects.get(email=temail)
+                req = student_requests.objects.get(request_id=request_id)
+                if teacher.role == 'CC':
+                    req.status = 'Approved by cc'
+                    req.save()
+                    studentPhone = req.student.phone
+                    sendsms(f'+91{studentPhone}', f'Your request with id {req.request_id} has been approved by cc')
+                
+                    hodphone =  str(teachers.objects.filter( role = "HOD", email = req.hod).values_list('phone', flat=True)[0])
+                    sendsms(f'+91{hodphone}', f'Your request with id {req.request_id} has been approved by cc and is pending your approval. Please login to your account to approve the request.Follow the link https://clggatepasssys-production.up.railway.app/request_list ')
+                    return redirect('request_list')
 
-        elif teacher.role == 'HOD':
-            req.status = 'Approved by hod'
-            req.save()
-            studentPhone = req.student.phone
-            sendsms(f'+91{studentPhone}', f'Your request with id {req.request_id} has been approved by hod')
-            return redirect('request_list')
+                elif teacher.role == 'HOD':
+                    req.status = 'Approved by hod'
+                    req.save()
+                    studentPhone = req.student.phone
+                    sendsms(f'+91{studentPhone}', f'Your request with id {req.request_id} has been approved by hod')
+                    return redirect('request_list')
 
-                
-                
-                
-    else:
-                messages.error(request, 'Invalid request id')
-                return redirect('request_list')
-    return redirect('request_list')
+                        
+                        
+                        
+            else:
+                        messages.error(request, 'Invalid request id')
+                        return redirect('request_list')
+            return redirect('request_list')
+    except Exception as e:
+        messages.error(request, f'Something went wrong {e}')
+        return redirect('request_list')
 
 
 
 
 
 def reject_request(request,request_id):
+    try:
         if request.method == 'POST':
            temail =  request.COOKIES.get('temail')
            teacher = teachers.objects.get(email=temail)
@@ -432,4 +438,7 @@ def reject_request(request,request_id):
         else:
                 messages.error(request, 'Invalid request id')
                 return redirect('request_list')
+        return redirect('request_list')
+    except Exception as e:
+        messages.error(request, f'Something went wrong {e}')
         return redirect('request_list')
