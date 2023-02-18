@@ -26,7 +26,7 @@ def Home(request):
     context = {
         'title': 'Home',
     }
-    return render(request, './index.html', context)
+    return render(request, 'index.html', context)
 
  # sign up logic for students
 
