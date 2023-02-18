@@ -34,7 +34,7 @@ SECRET_CODE = "99101"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['clggatepasssys-production.up.railway.app','localhost','*']
+ALLOWED_HOSTS = ['clggatepasssys-production.up.railway.app','localhost','*','clgpass-ollydxic8-vishnu-vashishth.vercel.app']
 
 
 # Application definition
