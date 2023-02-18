@@ -32,10 +32,10 @@ JWT_EXPIRATION_TIME = 60 * 60 * 24  # 1 day
 SECRET_CODE = "99101"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['clggatepasssys-production.up.railway.app','localhost','*','clgpass-ollydxic8-vishnu-vashishth.vercel.app']
-
+CSRF_TRUSTED_ORIGINS = ['https://clggatepasssys-production.up.railway.app','localhost','*','clgpass-ollydxic8-vishnu-vashishth.vercel.app']
 
 # Application definition
 
@@ -57,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'myproject.urls'
