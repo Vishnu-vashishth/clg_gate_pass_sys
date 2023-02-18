@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from myproject import views
+from django.conf import settings
+from django.conf.urls.static import static
 urlpatterns = [
     path('', views.Home , name='Home'),
     path('c/', views.comingSoon , name='comingSoon'),
@@ -31,3 +33,7 @@ urlpatterns = [
     path('approve_request/<slug:request_id>/', views.approve_request , name='approve_request'),
     path('reject_request/<slug:request_id>/', views.reject_request , name='reject_request'),
 ]
+
+
+urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
