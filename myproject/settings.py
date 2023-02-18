@@ -31,11 +31,18 @@ JWT_ALGORITHM = 'HS256'
 JWT_EXPIRATION_TIME = 60 * 60 * 24  # 1 day
 SECRET_CODE = "99101"
 
+TWILIO_ACCOUNT_SID = os.getenv('Account_SID')
+TWILIO_AUTH_TOKEN = os.getenv('Auth_Token')
+TWILIO_PHONE_NUMBER = os.getenv('Phone_Number')
+
+
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
 ALLOWED_HOSTS = ['clggatepasssys-production.up.railway.app','localhost','*','clgpass-ollydxic8-vishnu-vashishth.vercel.app']
-CSRF_TRUSTED_ORIGINS = ['https://clggatepasssys-production.up.railway.app','localhost','*','clgpass-ollydxic8-vishnu-vashishth.vercel.app']
+CSRF_TRUSTED_ORIGINS = ['http://clggatepasssys-production.up.railway.app','https://clggatepasssys-production.up.railway.app','http://localhost','http://*','http://clgpass-ollydxic8-vishnu-vashishth.vercel.app']
 
 # Application definition
 

@@ -8,8 +8,24 @@ from django.shortcuts import redirect
 import jwt
 from datetime import datetime, timedelta,date
 from django.conf import settings
+from twilio.rest import Client
+from django.conf import settings
+from twilio.base.exceptions import TwilioRestException
 
 
+def sendsms(phone,msg):
+    
+    client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+
+    try:
+        message = client.messages.create(
+            body=f'{msg}',
+            from_=settings.TWILIO_PHONE_NUMBER,
+            to=phone
+        )
+    except TwilioRestException as e:
+        print(e)
+        return False
 
 
 def comingSoon(request):
@@ -292,6 +308,7 @@ def srequest(request):
                 else:
                     user = student_requests(reason=reason, student=student, guardian_name=guardian_name, guardian_phone=guardian_phone, relation=relation,status = 'Pending')
                     user.save()
+                    sendsms(f'{guardian_phone}', f'{student.username} has requested for leave from college with reqid {id}')
                     messages.success( request, f'Your request has been submitted with id {id}')
                     response = redirect('showstatus')
                     response.set_cookie('reqcode', id)
@@ -369,11 +386,17 @@ def approve_request(request,request_id):
         if teacher.role == 'CC':
             req.status = 'Approved by cc'
             req.save()
+            studentPhone = req.student.phone
+            sendsms(f'{studentPhone}', f'Your request with id {req.request_id} has been approved by cc')
+            hodphone = teachers.objects.get(email = req.hod).phone
+            sendsms(f'{hodphone}', f'Your request with id {req.request_id} has been approved by cc and is pending your approval. Please login to your account to approve the request.Follow the link https://clggatepasssys-production.up.railway.app/request_list ')
             return redirect('request_list')
 
         elif teacher.role == 'HOD':
             req.status = 'Approved by hod'
             req.save()
+            studentPhone = req.student.phone
+            sendsms(f'{studentPhone}', f'Your request with id {req.request_id} has been approved by hod')
             return redirect('request_list')
 
                 
@@ -396,11 +419,13 @@ def reject_request(request,request_id):
            if teacher.role == 'CC':
                 req.status = 'Rejected by cc'
                 req.save()
+                sendsms(f'{req.student.phone}', f'Your request with id {req.request_id} has been rejected by cc')
                 return redirect('request_list')
 
            elif teacher.role == 'HOD':
                 req.status = 'Rejected by hod'
                 req.save()
+                sendsms(f'{req.student.phone}', f'Your request with id {req.request_id} has been rejected by hod')
                 return redirect('request_list')
     
         else:

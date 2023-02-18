@@ -1,5 +1,27 @@
 from django.db import models
 import datetime
+from twilio.rest import Client
+from django.conf import settings
+from twilio.base.exceptions import TwilioRestException
+
+def sendsms(phone,msg):
+    
+    client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+
+    try:
+        message = client.messages.create(
+            body=f'{msg}',
+            from_=settings.TWILIO_PHONE_NUMBER,
+            to=phone
+        )
+    except TwilioRestException as e:
+        print(e)
+        return False
+    # try:
+    #     response = client.lookups.phone_numbers(phone).fetch()
+    #     print(response.phone_number)
+    # except TwilioRestException as e:
+    #     print(e)
 
 
 class Students(models.Model):
@@ -40,23 +62,30 @@ class student_requests(models.Model):
     cc = models.CharField(max_length=100, null=True )
     hod = models.CharField(max_length=100,null = True)
     
+    
 
     
 
     def save(self, *args, **kwargs):
        
-        xcc = teachers.objects.filter( role = "CC", department = self.student.department, sem = self.student.sem).values_list('email', flat=True)
+        cclist = teachers.objects.filter( role = "CC", department = self.student.department, sem = self.student.sem)
+        xcc = cclist.values_list('email', flat=True)
+        ccphone = str(cclist.values_list('phone', flat=True)[0])
 
-        xhod = teachers.objects.filter( role = "HOD", department = self.student.department, sem = self.student.sem).values_list('email', flat=True)
+        hodlist = teachers.objects.filter( role = "HOD", department = self.student.department, sem = self.student.sem)
+        xhod = hodlist.values_list('email', flat=True)
+        
+
         if xcc : 
             self.cc = xcc
+            sendsms(f'+91{ccphone}', "New request for approval.Follow the link to approve the request https://clggatepasssys-production.up.railway.app/request_list")
         else :
             self.cc = "not found"
            
             
         if  xhod: 
-            
             self.hod = xhod
+            
         else :
            
             self.hod = "not found"
