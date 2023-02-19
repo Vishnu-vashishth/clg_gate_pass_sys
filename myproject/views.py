@@ -426,13 +426,13 @@ def reject_request(request,request_id):
            if teacher.role == 'CC':
                 req.status = 'Rejected by cc'
                 req.save()
-                sendsms(f'{req.student.phone}', f'Your request with id {req.request_id} has been rejected by cc')
+                sendsms(f'+91{req.student.phone}', f'Your request with id {req.request_id} has been rejected by cc')
                 return redirect('request_list')
 
            elif teacher.role == 'HOD':
                 req.status = 'Rejected by hod'
                 req.save()
-                sendsms(f'{req.student.phone}', f'Your request with id {req.request_id} has been rejected by hod')
+                sendsms(f'+91{req.student.phone}', f'Your request with id {req.request_id} has been rejected by hod')
                 return redirect('request_list')
     
         else:
