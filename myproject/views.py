@@ -26,7 +26,7 @@ def sendsms(phone,msg):
         )
     except TwilioRestException as e:
         print(e)
-        return False
+        return False, e
 
 
 def comingSoon(request):
@@ -309,7 +309,8 @@ def srequest(request):
                 else:
                     user = student_requests(reason=reason, student=student, guardian_name=guardian_name, guardian_phone=guardian_phone, relation=relation,status = 'Pending')
                     user.save()
-                    sendsms(f'{guardian_phone}', f'{student.username} has requested for leave from college with reqid {id}')
+                    smsresult = sendsms(f'+91{guardian_phone}', f'Hey {guardian_name} {student.username} belongs to you and has requested for leave from college with reqid {id}')
+                    print(smsresult)
                     messages.success( request, f'Your request has been submitted with id {id}')
                     response = redirect('showstatus')
                     response.set_cookie('reqcode', id)
@@ -390,23 +391,22 @@ def approve_request(request,request_id):
                     req.save()
                     studentPhone = req.student.phone
                     sendsms(f'+91{studentPhone}', f'Your request with id {req.request_id} has been approved by cc')
-                
-                    hodphone =  str(teachers.objects.filter( role = "HOD", email = req.hod).values_list('phone', flat=True)[0])
-                    sendsms(f'+91{hodphone}', f'Your request with id {req.request_id} has been approved by cc and is pending your approval. Please login to your account to approve the request.Follow the link https://clggatepasssys-production.up.railway.app/request_list ')
+                    hodphone =  str(teachers.objects.filter( role = "HOD", email = req.hod[0]).values_list('phone', flat=True)[0])
+                    smsresult =   sendsms(f'+91{hodphone}', f'Dear HOD request with id {req.request_id} has been approved by cc and is pending your approval. Please login to your account to approve the request.Follow the link https://clggatepasssys-production.up.railway.app/request_list ')
+                    print(smsresult)
                     return redirect('request_list')
 
                 elif teacher.role == 'HOD':
                     req.status = 'Approved by hod'
                     req.save()
-                    studentPhone = req.student.phone
-                    sendsms(f'+91{studentPhone}', f'Your request with id {req.request_id} has been approved by hod')
+                    sendsms(f'+91{studentPhone}', f'Your request with id {req.request_id} has been approved by hod you can go home now')
                     return redirect('request_list')
 
                         
                         
                         
             else:
-                        messages.error(request, 'Invalid request id')
+                        messages.error(request, 'something went wrong')
                         return redirect('request_list')
             return redirect('request_list')
     except Exception as e:

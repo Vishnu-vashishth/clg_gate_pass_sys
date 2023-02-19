@@ -80,7 +80,7 @@ class student_requests(models.Model):
 
         if xcc : 
             self.cc = xcc
-            sendsms(f'+91{ccphone}', "New request for approval.Follow the link to approve the request https://clggatepasssys-production.up.railway.app/request_list")
+            sendsms(f'+91{ccphone}', "Dear CC New request for approval.Follow the link to approve/Reject the request https://clggatepasssys-production.up.railway.app/request_list")
         else :
             self.cc = "not found"
            
